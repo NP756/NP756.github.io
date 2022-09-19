@@ -5,3 +5,7 @@ body {
 #nav-table {
   width: 800px;
 }
+
+#nav-td {
+  width: 256; text-align:center;
+}
