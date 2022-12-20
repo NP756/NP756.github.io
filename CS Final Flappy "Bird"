@@ -1,0 +1,78 @@
+var RocketMan = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.img = getImage("space/rocketship");
+};
+
+RocketMan.prototype.draw = function() {
+    this.y = constrain(this.y, 0, height - 50);
+     image(this.img, this.x, this.y, 65, 65);
+};
+
+RocketMan.prototype.fall = function() {
+    this.y += 5;
+};
+
+RocketMan.prototype.jump = function() {
+    this.y -= 10;
+};
+
+var rocketMan = new RocketMan(0, 200);
+
+var Pipe = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Pipe.prototype.draw = function() {
+    fill(50, 161, 96);
+    rect(this.x, this.y, 50, 102);
+};
+
+var topPipes = [];
+for(var q = 0; q < 15; q++) {
+    topPipes.push(new Pipe(q * 200 + 276, random(0, 0)));
+}
+
+var bottomPipes = [];
+for(var q = 0; q < 15; q++) {
+    bottomPipes.push(new Pipe(q * 200 + 276,  266));
+}
+
+var dirtGround = [];
+for(var a = 0; a < 25; a++) {
+    dirtGround.push(a * 25);
+}
+
+draw = function() {
+    background(100, 219, 219);
+    
+    fill(255, 238, 0);
+    ellipse(379, 40, 100, 100);
+    
+    for(var a = 0; a < dirtGround.length; a++) {
+        image(getImage("cute/DirtBlock"), dirtGround[a], 332, 27, 68);
+        dirtGround[a] -= 1;
+    if(dirtGround[a] <= -25) {
+        dirtGround[a] = width;
+    }
+   
+    }
+    for(var r = 0; r < topPipes.length; r++) {
+        topPipes[r].draw();
+        topPipes[r].x -= 1;
+    }
+    
+    for (var r = 0; r < bottomPipes.length; r++) {
+        bottomPipes[r].draw();
+        bottomPipes[r].x -= 1;
+    }
+    
+    if (keyIsPressed && key.code === 32) {
+        rocketMan.jump();
+    } else {
+        rocketMan.fall();
+    }
+    rocketMan.draw(); 
+};
+    
