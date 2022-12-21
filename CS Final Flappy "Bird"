@@ -1,78 +1,304 @@
+//controls what scene should be displayed and when
+var currentScene;
+
+
+//keeps track of the score
+var score = 0;
+
+
+//draws my bitmoji's head
+var drawBitmojiHead = function(x, y, h) {
+    noStroke();
+    fill(255,224,189); //skin color
+    ellipse(x, y, h/100*92, h/100*100); //head
+    fill(115, 94, 255); //chisel color
+    arc(x - (h/100*42), y + (h/100*37), h/100*28, h/100*55, h/100*0, h/100*361); //right chisel
+    arc(x + (h/100*42), y + (h/100*37), h/100*28, h/100*55, h/100*0, h/100*361); //left chisel 
+    fill(144, 84, 47); //brown hair 
+    quad(x - (h/100*47), y + (h/100*2), x - (h/100*36), y - (h/100*35), x - (h/100*15), y - (h/100*49), x - (h/100*35), y - (h/100*11)); //hair (right)
+    quad(x + (h/100*48), y - (h/100*7), x + (h/100*32), y - (h/100*40), x + (h/100*19), y - (h/100*46), x + (h/100*32), y + (h/100*1)); //hair (left)
+    ellipse(x - (h/100*1), y - (h/100*35), h/100*68, h/100*31); //top of hair
+    ellipse(x - (h/100*12), y - (h/100*4), h/100*10, h/100*6); //right eye
+    ellipse(x + (h/100*11), y - (h/100*4), h/100*10, h/100*6); //left eye
+    stroke(0, 0, 0);
+    fill(255, 224, 189); //for nose outline
+    bezier(x, y, x + (h/100*13), y + (h/100*22), x - (h/100*8), y + (h/100*20), x - (h/100*4), y + (h/100*15)); //nose
+    fill(255, 255, 255); //teeth color
+    arc(x - (h/100*1), y + (h/100*25), h/100*30, h/100*13, h/100*1, h/100*180); //mouth
+    line(x - (h/100*18), y + (h/100*25), x + (h/100*14), y + (h/100*25)); //top of mouth
+
+};
+
+
+//draws my bitmoji's body
+var drawBitmojiBody = function(x, y, h) {
+    noStroke(); 
+    fill(63, 65, 181); //blue for shirt
+    rect(x - (h/100*50), y + (h/100*51), h/100*100, h/100*49); //blue shirt 
+    fill(255, 224, 189); //skin color
+    triangle(x - (h/100*33), y + (h/100*53), x - (h/100*4), y + (h/100*37), x + (h/100*34), y + (h/100*53)); //my attempt at a neck
+    fill(255, 255, 255); //text color
+    textSize(h/100*25);
+    text("N P", x - (h/100*4), y + (h/100*65), h/100*100, h/100*100); //initials 
+
+};
+
+
+//draws my bitmoji together
+var drawBitmoji = function(x, y, h) {
+    drawBitmojiHead(x, y, h);
+    drawBitmojiBody(x, y, h);
+};
+
+
+//constructor function for the button variable
+var Button = function(config) {
+    this.x = config.x || 0; //controls the x value of the button
+    this.y = config.y || 0; //controls the y value of the button
+    this.width = config.width || 150; //controls the width of the button
+    this.height = config.height || 50; 
+    this.label = config.label || "Click";
+    this.onClick = config.onClick || function() {};
+};
+
+
+//draw method for the Button object type 
+Button.prototype.draw = function() {
+    fill(0, 0, 0);
+    rect(this.x, this.y, this.width, this.height, 5);
+    fill(255, 255, 255);
+    textSize(25);
+    textAlign(LEFT, TOP);
+    text(this.label, this.x + 42, this.y + this.height / 4);
+};
+
+
+//Method that checks if the mouse is inside the buttons bounds 
+Button.prototype.isMouseInside = function() {
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+
+/*method that triggered whenever the mouse is clicked, and checks if the mouse is inside the button's boundaries by triggerng the isMouseInside method*/
+Button.prototype.handleMouseClick = function() {
+    if (this.isMouseInside()) {
+        this.onClick();
+    }
+};
+
+
+//creates a new button from the button object class
+var playButton = new Button ( {
+    x: 124, 
+    y: 326,
+    label: "PLAY",
+    onClick: function() {
+        currentScene = 2;
+    }
+});
+
+
+//start splash screen
+var drawScene1 = function() {
+    currentScene = 1;
+    background(115, 94, 255);
+    drawBitmoji(85, 186, 110);
+    textSize(20);
+    text("Instructions", 202, 141);
+    textSize(15);
+    text("The game is simple:" , 189, 179);
+    text("Press the SPACEBAR to jump", 159, 203);
+    text("Avoid the PIPES and the GROUND", 142, 225);
+    text("Nick Plamondon", 30, 314);
+    text("See if you can get to 20!", 175, 265);
+    fill(255, 0, 0);
+    textSize(50);
+    text("Flappy Bird", 70, 100);
+    playButton.draw();
+    
+};
+
+
+//constructor function for the player's character 
 var RocketMan = function(x, y) {
     this.x = x;
     this.y = y;
     this.img = getImage("space/rocketship");
 };
 
+
+//draw method for RocketMan
 RocketMan.prototype.draw = function() {
-    this.y = constrain(this.y, 0, height - 50);
+    this.y = constrain(this.y, 0, height - 50); //keeps the character from flying off the map
      image(this.img, this.x, this.y, 65, 65);
 };
 
+
+//fall method for RocketMan which has him fall by adding to this.y
 RocketMan.prototype.fall = function() {
-    this.y += 5;
+    this.y += 3;
 };
 
+
+//jump method for RocketMan which has him jump by adding to this.y 
 RocketMan.prototype.jump = function() {
-    this.y -= 10;
+    this.y -= 5;
 };
+
+
+//RocketMan method that checks if he has collided with the pipes 
+RocketMan.prototype.checkForPipeCollision = function(pipe) {
+    if((pipe.x >= this.x && pipe.x <= (this.x + 90)) && (pipe.y >= (this.y - 30) && pipe.y <= (this.y + 106)) || this.y >= 320) { 
+        currentScene = 3;
+    }
+    
+/*Above is an if statement that checks if the pipe.x and pipe.y values are overlapping with rocketMan's x and y values */ 
+};
+
 
 var rocketMan = new RocketMan(0, 200);
 
+
+//constructor function for the pipes 
 var Pipe = function(x, y) {
     this.x = x;
     this.y = y;
 };
 
+
+//draw method for the pipes 
 Pipe.prototype.draw = function() {
     fill(50, 161, 96);
-    rect(this.x, this.y, 50, 102);
+    rectMode(CENTER);
+    rect(this.x, this.y, 55, 145);
 };
 
+
+//array of initial positions for the top pipes
 var topPipes = [];
-for(var q = 0; q < 15; q++) {
-    topPipes.push(new Pipe(q * 200 + 276, random(0, 0)));
+for(var q = 0; q < 20; q++) { //for loop that pushes 15 top pipes into the topPipes array
+    topPipes.push(new Pipe(q * 200 + 276, random(0, 50)));
 }
 
+
+//array of initial positions for the bottom pipes
 var bottomPipes = [];
-for(var q = 0; q < 15; q++) {
-    bottomPipes.push(new Pipe(q * 200 + 276,  266));
-}
+for(var q = 0; q < 20; q++) { //for loop that pushes 15 bottom pipes into the array
+    bottomPipes.push(new Pipe(q * 200 + 276,  random(280,295))); 
+} 
 
+
+//array of initial positions for the ground
 var dirtGround = [];
-for(var a = 0; a < 25; a++) {
+for(var a = 0; a < 25; a++) { //pushes a new dirt block into the dirtGround array
     dirtGround.push(a * 25);
 }
 
+
 draw = function() {
-    background(100, 219, 219);
     
-    fill(255, 238, 0);
-    ellipse(379, 40, 100, 100);
     
-    for(var a = 0; a < dirtGround.length; a++) {
-        image(getImage("cute/DirtBlock"), dirtGround[a], 332, 27, 68);
-        dirtGround[a] -= 1;
-    if(dirtGround[a] <= -25) {
-        dirtGround[a] = width;
-    }
-   
-    }
-    for(var r = 0; r < topPipes.length; r++) {
-        topPipes[r].draw();
-        topPipes[r].x -= 1;
-    }
     
-    for (var r = 0; r < bottomPipes.length; r++) {
-        bottomPipes[r].draw();
-        bottomPipes[r].x -= 1;
-    }
+    if(currentScene === 2) {
     
-    if (keyIsPressed && key.code === 32) {
-        rocketMan.jump();
-    } else {
-        rocketMan.fall();
+        //static 
+        background(100, 219, 219);
+        
+        //the sun
+        fill(255, 238, 0);
+        ellipse(379, 40, 100, 100);
+        
+        stroke(0, 0, 0);
+        //for loop to draw out dirt blocks 
+        for(var a = 0; a < dirtGround.length; a++) {
+            image(getImage("cute/DirtBlock"), dirtGround[a], 332, 27, 68);
+            dirtGround[a] -= 1; //moves the dirt blocks to the left of the screen
+                if(dirtGround[a] <= -25) { 
+                dirtGround[a] = width;
+        //if statement that has a dirt block moved to the right side of the screen if it goes off the left 
+        }
+ 
+        //for loop to draw out the top pipes   
+        }
+        for(var r = 0; r < topPipes.length; r++) {
+            topPipes[r].draw(); //draws a top pipe for each element in the topPipes array 
+            topPipes[r].x -= 1; //has the top pipes move to the left of the screen
+            rocketMan.checkForPipeCollision(topPipes[r]);
+            if(topPipes[r].x === -10) {
+                score += 0.5;
+            }
+        }
+    
+        //for loop to draw out the bottom pipes
+        for (var r = 0; r < bottomPipes.length; r++) {
+            bottomPipes[r].draw();//draws a bottom pipe
+            bottomPipes[r].x -= 1; //has the bottom  pipes move to the left of the screen
+            rocketMan.checkForPipeCollision(bottomPipes[r]);
+            if(topPipes[r].x === -10) {
+                score += 0.5;
+            }
+        }
+    
+        //if statement that checks if the spacebar is pressed 
+        if (keyIsPressed && key.code === 32) {
+        rocketMan.jump(); //if the space bar is pressed, rocketMan will go up
+        } else {
+            rocketMan.fall(); //if the spae bar is not pressed, rocketMan will fall
+        }
+        
+        fill(34, 0, 255);
+        text("Score: " + score, 3, 0);
+        if(score === 20) {
+            currentScene = 4;
+        }
+    
+    
+    //screen if the player reaches game over
+    if(currentScene === 3) {
+    textSize(50);
+    fill(255, 0, 0);
+    text("GAME OVER!", 38, 23);
+    textSize(25);
+    rectMode(CORNER);
+    drawBitmoji(185, 247, 100);
+    stroke(0, 0, 0);
+    ellipse(292, 166, 178, 100);
+    textSize(15);
+    fill(0, 0, 0);
+    text("Good try!", 259, 134);
+    text("Press restart to go home!", 206, 158);
     }
-    rocketMan.draw(); 
+
+rocketMan.draw(); //draws rocketMan
+    //screen if the player reaches 20 points and wins the game 
+    if(currentScene === 4) {
+        background(0, 0, 0);
+        rectMode(CORNER);
+        fill(255, 238, 0);
+        textSize(50);
+        text("VICTORY!!!", 65, 65);
+        stroke(0, 0, 0);
+        drawBitmoji(185, 247, 100);
+        fill(255, 255, 255);
+        ellipse(292, 177, 138, 72);
+        textSize(15);
+        fill(0, 0, 0);
+        text("Great Job!", 255, 165);
+        
+    }
+}
 };
-    
+
+
+//mouseClicked function that triggers the handleMouseClick method
+mouseClicked = function() {
+    playButton.handleMouseClick();
+};
+
+
+//draws the first scene 
+drawScene1();
+
