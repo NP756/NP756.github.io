@@ -56,20 +56,20 @@ var Button = function(config) {
     this.x = config.x || 0; //controls the x value of the button
     this.y = config.y || 0; //controls the y value of the button
     this.width = config.width || 150; //controls the width of the button
-    this.height = config.height || 50; 
-    this.label = config.label || "Click";
-    this.onClick = config.onClick || function() {};
+    this.height = config.height || 50; //controls the height of the button
+    this.label = config.label || "Click"; //controls the button's label
+    this.onClick = config.onClick || function() {}; //handles what happens when the button is clicked 
 };
 
 
 //draw method for the Button object type 
 Button.prototype.draw = function() {
     fill(0, 0, 0);
-    rect(this.x, this.y, this.width, this.height, 5);
+    rect(this.x, this.y, this.width, this.height, 5); //size of the button
     fill(255, 255, 255);
-    textSize(25);
-    textAlign(LEFT, TOP);
-    text(this.label, this.x + 42, this.y + this.height / 4);
+    textSize(25); 
+    textAlign(LEFT, TOP); //how the text aligns on the button
+    text(this.label, this.x + 42, this.y + this.height / 4); 
 };
 
 
@@ -79,6 +79,7 @@ Button.prototype.isMouseInside = function() {
            mouseX < (this.x + this.width) &&
            mouseY > this.y &&
            mouseY < (this.y + this.height);
+    //checks if the mouseX and mouseY coordinates are in the bounds of the button, using this.x and this.y 
 };
 
 
@@ -103,7 +104,7 @@ var playButton = new Button ( {
 
 //start splash screen
 var drawScene1 = function() {
-    currentScene = 1;
+    currentScene = 1; 
     background(115, 94, 255);
     drawBitmoji(85, 186, 110);
     textSize(20);
@@ -117,7 +118,7 @@ var drawScene1 = function() {
     fill(255, 0, 0);
     textSize(50);
     text("Flappy Bird", 70, 100);
-    playButton.draw();
+    playButton.draw(); 
     
 };
 
@@ -126,7 +127,7 @@ var drawScene1 = function() {
 var RocketMan = function(x, y) {
     this.x = x;
     this.y = y;
-    this.img = getImage("space/rocketship");
+    this.img = getImage("space/rocketship"); //gets the image for the khan character
 };
 
 
@@ -154,11 +155,11 @@ RocketMan.prototype.checkForPipeCollision = function(pipe) {
     if((pipe.x >= this.x && pipe.x <= (this.x + 90)) && (pipe.y >= (this.y - 30) && pipe.y <= (this.y + 106)) || this.y >= 320) { 
         currentScene = 3;
     }
-    
-/*Above is an if statement that checks if the pipe.x and pipe.y values are overlapping with rocketMan's x and y values */ 
+/*Above is an if statement that checks if the pipe.x and pipe.y values are overlapping with rocketMan's x and y values, or if his y value exceeds 320, meaning he hit the ground. This triggers the game's game over screen by making the current scene 3 */ 
 };
 
 
+//creates new instance of RocketMan called rocketMan
 var rocketMan = new RocketMan(0, 200);
 
 
@@ -172,21 +173,21 @@ var Pipe = function(x, y) {
 //draw method for the pipes 
 Pipe.prototype.draw = function() {
     fill(50, 161, 96);
-    rectMode(CENTER);
-    rect(this.x, this.y, 55, 145);
+    rectMode(CENTER); //makes the rectangle use x and y as the center point to draw from
+    rect(this.x, this.y, 55, 145); //pipe
 };
 
 
 //array of initial positions for the top pipes
 var topPipes = [];
-for(var q = 0; q < 20; q++) { //for loop that pushes 15 top pipes into the topPipes array
+for(var q = 0; q < 20; q++) { //for loop that pushes 20 top pipes into the topPipes array
     topPipes.push(new Pipe(q * 200 + 276, random(0, 50)));
 }
 
 
 //array of initial positions for the bottom pipes
 var bottomPipes = [];
-for(var q = 0; q < 20; q++) { //for loop that pushes 15 bottom pipes into the array
+for(var q = 0; q < 20; q++) { //for loop that pushes 20 bottom pipes into the array
     bottomPipes.push(new Pipe(q * 200 + 276,  random(280,295))); 
 } 
 
@@ -199,10 +200,8 @@ for(var a = 0; a < 25; a++) { //pushes a new dirt block into the dirtGround arra
 
 
 draw = function() {
-    
-    
-    
-    if(currentScene === 2) {
+
+    if(currentScene === 2) { //if the current scene equals 2, draw all these things 
     
         //static 
         background(100, 219, 219);
@@ -218,7 +217,7 @@ draw = function() {
             dirtGround[a] -= 1; //moves the dirt blocks to the left of the screen
                 if(dirtGround[a] <= -25) { 
                 dirtGround[a] = width;
-        //if statement that has a dirt block moved to the right side of the screen if it goes off the left 
+        //if statement that has a dirt block moved to the right side of the screen if it's x           value is less than or equal to -25
         }
  
         //for loop to draw out the top pipes   
@@ -226,9 +225,10 @@ draw = function() {
         for(var r = 0; r < topPipes.length; r++) {
             topPipes[r].draw(); //draws a top pipe for each element in the topPipes array 
             topPipes[r].x -= 1; //has the top pipes move to the left of the screen
-            rocketMan.checkForPipeCollision(topPipes[r]);
-            if(topPipes[r].x === -10) {
-                score += 0.5;
+            rocketMan.checkForPipeCollision(topPipes[r]); //check for collision on each pipe
+            if(topPipes[r].x === -12) {
+                score += 1;
+            //if the top pipe's x value reaches -12 a point will be added to the score                    variable
             }
         }
     
@@ -236,10 +236,7 @@ draw = function() {
         for (var r = 0; r < bottomPipes.length; r++) {
             bottomPipes[r].draw();//draws a bottom pipe
             bottomPipes[r].x -= 1; //has the bottom  pipes move to the left of the screen
-            rocketMan.checkForPipeCollision(bottomPipes[r]);
-            if(topPipes[r].x === -10) {
-                score += 0.5;
-            }
+            rocketMan.checkForPipeCollision(bottomPipes[r]); //check for collision on each              pipe
         }
     
         //if statement that checks if the spacebar is pressed 
@@ -249,10 +246,11 @@ draw = function() {
             rocketMan.fall(); //if the spae bar is not pressed, rocketMan will fall
         }
         
+        //writes out the score in the top left of the screen
         fill(34, 0, 255);
         text("Score: " + score, 3, 0);
-        if(score === 20) {
-            currentScene = 4;
+        if(score === 20) {//win condition, if the score is 20 it takes you to the win screen
+            currentScene = 4; 
         }
     
     
@@ -273,7 +271,8 @@ draw = function() {
     }
 
 rocketMan.draw(); //draws rocketMan
-    //screen if the player reaches 20 points and wins the game 
+
+    //screen if the player reaches the win condition(20 points) 
     if(currentScene === 4) {
         background(0, 0, 0);
         rectMode(CORNER);
@@ -301,4 +300,3 @@ mouseClicked = function() {
 
 //draws the first scene 
 drawScene1();
-
