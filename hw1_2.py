@@ -1,5 +1,5 @@
-a = float(input("Enter homework grade: "))
-b = float(input("Enter midterm grade: "))
-c = float(input("Enter final exam grade: "))
+a = float(input("Enter Homework Grade: "))
+b = float(input("Enter Midterm Grade: "))
+c = float(input("Enter Final Exam Grade: "))
 finalGrade = (a*0.45)+(b*0.25)+(c*0.30)
 print("Your final grade is: ", round(finalGrade, 2))
