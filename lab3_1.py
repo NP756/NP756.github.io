@@ -5,8 +5,8 @@ dangerList = []
 
 i = 0
 
-warningValue = int(input("Enter threshold for warning values: "))
-dangerValue = int(input("Enter threshold for danger values: "))
+warningValue = float(input("Enter threshold for warning values: "))
+dangerValue = float(input("Enter threshold for danger values: "))
 
 while i >= 0:
     vibration = float(input("Enter vibration value (-1 to quit): "))
