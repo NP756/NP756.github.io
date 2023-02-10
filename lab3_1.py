@@ -5,11 +5,11 @@ dangerList = []
 
 i = 0
 
-warningValue = float(int("Enter threshold for warning values: "))
-dangerValue = float(int("Enter threshold for danger values: "))
+warningValue = float(input("Enter threshold for warning values: "))
+dangerValue = float(input("Enter threshold for danger values: "))
 
 while i >= 0:
-    vibration = float(int("Enter vibration value (-1 to quit): "))
+    vibration = float(input("Enter vibration value (-1 to quit): "))
     totalList.append(vibration)
     if totalList[i] < warningValue:
         warningList.append(vibration[i])
