@@ -17,7 +17,7 @@ while i >= 0:
         dangerList.append(vibration[i])
     if totalList[i] > warningValue and totalList[i] < dangerValue:
         safeList.append(vibration[i])
-    if vibration = -1:
+    if vibration == -1:
         i = -1
 
 print("There are safe readings: ")
