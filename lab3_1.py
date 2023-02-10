@@ -16,7 +16,7 @@ while q == 0:
 warningValue = float(input("Enter threshold for warning values: "))
 dangerValue = float(input("Enter threshold for danger values: "))        
 
-while i <= len(totalList):
+while i < len(totalList):
     if totalList[i] < warningValue:
         warningList.append(totalList[i])
         i = i + 1
