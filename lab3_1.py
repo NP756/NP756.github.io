@@ -11,14 +11,14 @@ dangerValue = int(input("Enter threshold for danger values: "))
 while i >= 0:
     vibration = float(int("Enter vibration value (-1 to quit): "))
     totalList.append(vibration)
-        if totalList[i] < warningValue:
-            warningList.append(vibration[i])
-        if totalList[i] > dangerValue:
-            dangerList.append(vibration[i])
-        if totalList[i] > warningValue && totalList[i] < dangerValue:
-            safeList.append[vibration[i])
-        if vibration = -1:
-            i = -1
+    if totalList[i] < warningValue:
+        warningList.append(vibration[i])
+    if totalList[i] > dangerValue:
+        dangerList.append(vibration[i])
+    if totalList[i] > warningValue && totalList[i] < dangerValue:
+        safeList.append[vibration[i])
+    if vibration = -1:
+        i = -1
 
 print("There are safe readings: ")
 print(safeList)
