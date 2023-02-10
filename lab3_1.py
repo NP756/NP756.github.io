@@ -28,12 +28,12 @@ while i <= len(totalList):
         i = i + 1
  
 
-print("There are safe readings: ")
+print("There are", len(safeList), "safe readings: ")
 print(safeList)
                             
-print("There are warning readings: ")
+print("There are", len(warningList), "warning readings: ")
 print(warningList)
 
-print("There are danger readings: ")
+print("There are", len(dangerList), "danger readings: ")
 print(dangerList)
                             
