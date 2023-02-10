@@ -23,6 +23,7 @@ while i < len(totalList):
         dangerList.append(totalList[i])
     if totalList[i] > warningValue and totalList[i] < dangerValue:
         safeList.append(totalList[i])
+    i = i + 1
 
 print("There are safe readings: ")
 print(safeList)
