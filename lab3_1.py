@@ -6,7 +6,7 @@ dangerList = []
 q = true
 i = 0
 
-while q = true:
+while q == true:
     vibration = float(input("Enter vibration value (-1 to quit): "))
     totalList.append(vibration)
 
