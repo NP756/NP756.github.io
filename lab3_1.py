@@ -12,11 +12,11 @@ while i >= 0:
     vibration = float(input("Enter vibration value (-1 to quit): "))
     totalList.append(vibration)
     if totalList[i] < warningValue:
-        warningList.append(vibration[i])
+        warningList.append(totalList[i])
     if totalList[i] > dangerValue:
-        dangerList.append(vibration[i])
+        dangerList.append(totalList[i])
     if totalList[i] > warningValue and totalList[i] < dangerValue:
-        safeList.append(vibration[i])
+        safeList.append(totalList[i])
     if vibration == -1:
         i = -1
 
