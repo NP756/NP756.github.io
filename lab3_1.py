@@ -19,11 +19,14 @@ dangerValue = float(input("Enter threshold for danger values: "))
 while i < len(totalList):
     if totalList[i] < warningValue:
         warningList.append(totalList[i])
+        i = i + 1
     if totalList[i] > dangerValue:
         dangerList.append(totalList[i])
+        i = i + 1
     if totalList[i] > warningValue and totalList[i] < dangerValue:
         safeList.append(totalList[i])
-    i = i + 1
+        i = i + 1
+ 
 
 print("There are safe readings: ")
 print(safeList)
