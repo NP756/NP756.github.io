@@ -16,7 +16,7 @@ while i >= 0:
     if totalList[i] > dangerValue:
         dangerList.append(vibration[i])
     if totalList[i] > warningValue && totalList[i] < dangerValue:
-        safeList.append[vibration[i])
+        safeList.append(vibration[i])
     if vibration = -1:
         i = -1
 
