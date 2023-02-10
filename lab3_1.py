@@ -3,15 +3,15 @@ warningList = []
 safeList = []
 dangerList = []
 
-q = True
+q = 0
 i = 0
 
-while q == True:
+while q <= 0:
     vibration = float(input("Enter vibration value (-1 to quit): "))
     totalList.append(vibration)
 
     if vibration == -1:
-        q = False
+        q = -1
  
 warningValue = float(input("Enter threshold for warning values: "))
 dangerValue = float(input("Enter threshold for danger values: "))        
